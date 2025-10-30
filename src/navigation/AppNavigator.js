@@ -2,11 +2,12 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-import LoginScreen from "../screens/LoginScreen";
+import LoginScreen from "../screens/Login/LoginScreen";
 import AdminDashboard from "../screens/AdminDashboard";
 import OwnerDashboard from "../screens/OwnerDashboard";
 import TenantDashboard from "../screens/TenantDashboard";
 import AirbnbGuestDashboard from "../screens/AirbnbGuestDashboard";
+import ApartmentListScreen from "../screens/Apartment/ApartmentListScreen";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -31,13 +32,20 @@ function AdminDrawer() {
       screenOptions={{ headerShown: true }}
     >
       <Drawer.Screen
-        name="AdminDashboard"
+        name="AdminHome"
         component={AdminDashboard}
         options={{ title: "Panel Administrador" }}
       />
+      <Drawer.Screen
+        name="ApartmentList"
+        component={ApartmentListScreen}
+        options={{ title: "Apartamentos" }}
+      />
+      {/* Puedes añadir más pantallas aquí */}
     </Drawer.Navigator>
   );
 }
+
 function OwnerDrawer() {
   return (
     <Drawer.Navigator
@@ -86,7 +94,7 @@ export default function AppNavigator() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="AdminDashboard" component={AdminDrawer} />
+        <Stack.Screen name="AdminDrawer" component={AdminDrawer} />
         <Stack.Screen name="OwnerDashboard" component={OwnerDrawer} />
         <Stack.Screen name="TenantDashboard" component={TenantDrawer} />
         <Stack.Screen name="AirbnbGuestDashboard" component={AirbnbDrawer} />
