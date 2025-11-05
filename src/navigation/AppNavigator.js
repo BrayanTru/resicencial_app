@@ -8,6 +8,9 @@ import OwnerDashboard from "../screens/OwnerDashboard";
 import TenantDashboard from "../screens/TenantDashboard";
 import AirbnbGuestDashboard from "../screens/AirbnbGuestDashboard";
 import ApartmentListScreen from "../screens/Apartment/ApartmentListScreen";
+import PaymentListScreen from "../screens/Payments/PaymentListScreen";
+import ResidentListScreen from "../screens/Residents/ResidentListScreen";
+import EventListScreen from "../screens/Events/EventListScreen";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -41,6 +44,21 @@ function AdminDrawer() {
         component={ApartmentListScreen}
         options={{ title: "Apartamentos" }}
       />
+       <Drawer.Screen
+        name="PaymentList"
+        component={PaymentListScreen}
+        options={{ title: "Pagos" }}
+      />
+      <Drawer.Screen
+      name="ResidentListScreen"
+      component={ResidentListScreen}
+      options={{ title: "Residentes" }}
+      />
+      <Drawer.Screen
+      name="EventListScreen"
+      component={EventListScreen}
+      options={{ title: "Eventos" }}
+      /> 
       {/* Puedes añadir más pantallas aquí */}
     </Drawer.Navigator>
   );

@@ -14,14 +14,32 @@ export default function ApartmentForm({ onClose, apartment = null, mode = "creat
   const [status, setStatus] = useState(apartment?.status ?? "owner_occupied");
 
   const handleSubmit = async () => {
-    const floorInt = parseInt(floor, 10); // fuerza a int (base 10)
-      if (mode === "create") {
+  try {
+    const floorInt = parseInt(floor, 10);
+    if (mode === "create") {
       await createApartment({ number, tower, floor: floorInt, type, status }, token);
     } else {
       await updateApartment(apartment.id, { number, tower, floor: floorInt, type, status }, token);
     }
     onClose();
-  };
+  } catch (err) {
+    // err puede ser un objeto ({error, ...}) o un string
+    let msg = (
+      err?.error ||
+      err?.response?.data?.error || // error en data
+      err?.toString() ||            // por si es string
+      "No se pudo crear el apartamento. Por favor revisa los datos."
+    );
+    // Traducimos errores técnicos a lenguaje claro para usuarios:
+    if (msg.includes("Ya existe un apartamento")) {
+      msg = "Ya existe un apartamento registrado con ese número, torre y piso.";
+    }
+    if (msg.includes("El piso indicado no existe")) {
+      msg = "El piso seleccionado no existe en esa torre.";
+    }
+    Alert.alert("¡Atención!", msg);
+  }
+};
 
   return (
     <Modal visible animationType="slide">

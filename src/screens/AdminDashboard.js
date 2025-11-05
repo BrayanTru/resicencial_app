@@ -1,6 +1,14 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+
+const actions = [
+  { key: "residents", label: "Residentes", icon: "people-outline", onPress: (navigation) => navigation.navigate("ResidentListScreen") },
+  { key: "apartments", label: "Apartamentos", icon: "archive-outline", onPress: (navigation) => navigation.navigate("ApartmentList") },
+  { key: "payments", label: "Pagos", icon: "cash-outline", onPress: (navigation) => navigation.navigate("PaymentList") },
+  { key: "maintenances", label: "Eventos", icon: "calendar-outline", onPress: (navigation) => navigation.navigate("EventListScreen") },
+  { key: "notificaciones", label: "Notificaciones", icon: "notifications-outline", onPress: () => {} },
+];
 
 export default function AdminDashboard({ navigation }) {
   return (
@@ -11,23 +19,30 @@ export default function AdminDashboard({ navigation }) {
         <Text style={styles.subtitle}>Gestión completa del conjunto</Text>
       </View>
 
-      <View style={styles.actionsContainer}>
-        <TouchableOpacity style={styles.widget}>
-          <Ionicons name="people-outline" size={32} color="#004272" />
-          <Text style={styles.widgetLabel}>Residentes</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.widget}
-          onPress={() => navigation.navigate("ApartmentList")}
-        >
-          <Ionicons name="archive-outline" size={32} color="#004272" />
-          <Text style={styles.widgetLabel}>Apartamentos</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.widget}>
-          <Ionicons name="cash-outline" size={32} color="#004272" />
-          <Text style={styles.widgetLabel}>Pagos</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Carrusel horizontal de tarjetas */}
+      <FlatList
+        data={actions}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={item => item.key}
+        contentContainerStyle={styles.carouselContainer}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.widget}
+            onPress={() => item.onPress(navigation)}
+            activeOpacity={0.75}
+          >
+            <Ionicons name={item.icon} size={32} color="#004272" />
+            <Text
+              style={styles.widgetLabel}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {item.label}
+            </Text>
+          </TouchableOpacity>
+        )}
+      />
 
       <View style={styles.infoCard}>
         <Ionicons name="information-circle" size={25} color="#008bb0" />
@@ -58,23 +73,25 @@ const styles = StyleSheet.create({
   },
   title: { fontSize: 26, fontWeight: "bold", color: "#004272", marginBottom: 4 },
   subtitle: { fontSize: 17, color: "#5f7796", marginBottom: 22 },
-  actionsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginVertical: 40,
-    marginHorizontal: 10,
+
+  carouselContainer: {
+    paddingVertical: 18,
+    paddingLeft: 6,
   },
   widget: {
     backgroundColor: "#fff",
     borderRadius: 14,
     alignItems: "center",
+    justifyContent: "center",
     padding: 18,
-    width: 100,
+    minWidth: 120,
+    maxWidth: 140,
+    marginRight: 18,
     elevation: 2,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.09,
-    shadowRadius: 6,
+    shadowOpacity: 0.08,
+    shadowRadius: 5,
   },
   widgetLabel: {
     marginTop: 7,
