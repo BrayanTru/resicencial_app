@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API = "http://192.168.80.13:4000";
+const API = "http://10.155.189.199:4000";
 
-// LOGIN 
+// LOGIN
 export const login = async (email, password) => {
   try {
     const res = await axios.post(`${API}/api/auth/login`, { email, password });
@@ -22,7 +22,10 @@ export const getApartments = async (token) => {
     });
     return res.data.data; // ajusta si tu backend devuelve otra estructura
   } catch (err) {
-    console.error("Error al obtener apartamentos:", err.response?.data || err.message);
+    console.error(
+      "Error al obtener apartamentos:",
+      err.response?.data || err.message
+    );
     throw err.response?.data || { error: "Error de conexión" };
   }
 };
@@ -35,7 +38,10 @@ export const createApartment = async (apartmentData, token) => {
     });
     return res.data.data; // para mostrar apartamento creado
   } catch (err) {
-    console.error("Error al crear apartamento:", err.response?.data || err.message);
+    console.error(
+      "Error al crear apartamento:",
+      err.response?.data || err.message
+    );
     throw err.response?.data || { error: "Error de conexión" };
   }
 };
@@ -48,7 +54,10 @@ export const updateApartment = async (id, apartmentData, token) => {
     });
     return res.data.data;
   } catch (err) {
-    console.error("Error al actualizar apartamento:", err.response?.data || err.message);
+    console.error(
+      "Error al actualizar apartamento:",
+      err.response?.data || err.message
+    );
     throw err.response?.data || { error: "Error de conexión" };
   }
 };
@@ -61,7 +70,10 @@ export const deleteApartment = async (id, token) => {
     });
     return res.data;
   } catch (err) {
-    console.error("Error al eliminar apartamento:", err.response?.data || err.message);
+    console.error(
+      "Error al eliminar apartamento:",
+      err.response?.data || err.message
+    );
     throw err.response?.data || { error: "Error de conexión" };
   }
 };
@@ -105,7 +117,7 @@ export const registerPaymentAsPaid = async (paymentId, token) => {
 export const getUsers = async (token) => {
   try {
     const res = await axios.get(`${API}/api/users`, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
     return res.data.data; // ajusta si tu backend devuelve otra estructura
   } catch (err) {
@@ -115,7 +127,9 @@ export const getUsers = async (token) => {
 
 export const getEvents = async (token) => {
   try {
-    const res = await axios.get(`${API}/api/maintenance`, { headers: { Authorization: `Bearer ${token}` } });
+    const res = await axios.get(`${API}/api/maintenance`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return res.data.data;
   } catch (err) {
     throw err.response?.data || { error: "Error de conexión" };
@@ -124,7 +138,9 @@ export const getEvents = async (token) => {
 
 export const createEvent = async (payload, token) => {
   try {
-    const res = await axios.post(`${API}/api/maintenance`, payload, { headers: { Authorization: `Bearer ${token}` } });
+    const res = await axios.post(`${API}/api/maintenance`, payload, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return res.data.data;
   } catch (err) {
     throw err.response?.data || { error: "Error de conexión" };
@@ -134,7 +150,9 @@ export const createEvent = async (payload, token) => {
 // NUEVO: Eliminar mantenimiento por id
 export const deleteEvent = async (id, token) => {
   try {
-    const res = await axios.delete(`${API}/api/maintenance/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+    const res = await axios.delete(`${API}/api/maintenance/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return res.data; // Devuelve mensaje de éxito
   } catch (err) {
     throw err.response?.data || { error: "Error de conexión" };
@@ -145,10 +163,42 @@ export const deleteEvent = async (id, token) => {
 export const updateEvent = async (id, payload, token) => {
   try {
     const res = await axios.put(`${API}/api/maintenance/${id}`, payload, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
     return res.data.data;
   } catch (err) {
+    throw err.response?.data || { error: "Error de conexión" };
+  }
+};
+
+// Obtener reportes del propietario autenticado
+export const getMyReports = async (token) => {
+  try {
+    const res = await axios.get(`${API}/api/damage-reports/my-reports`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return res.data.data;
+  } catch (err) {
+    console.error(
+      "Error al obtener reportes de daño:",
+      err.response?.data || err.message
+    );
+    throw err.response?.data || { error: "Error de conexión" };
+  }
+};
+
+// Crear un nuevo reporte de daño
+export const createDamageReport = async (payload, token) => {
+  try {
+    const res = await axios.post(`${API}/api/damage-reports`, payload, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return res.data.data;
+  } catch (err) {
+    console.error(
+      "Error al crear reporte de daño:",
+      err.response?.data || err.message
+    );
     throw err.response?.data || { error: "Error de conexión" };
   }
 };

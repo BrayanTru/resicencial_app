@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, Alert, Linking, ActivityIndicator } from "react-native";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 import LoginForm from "./LoginForm";
 import styles from "./LoginStyles";
 import { login } from "../../services/api";
@@ -8,7 +8,7 @@ import { AuthContext } from "../../context/AuthContext";
 
 export default function LoginScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
-  const { setToken } = React.useContext(AuthContext);
+  const { setToken, setUser } = React.useContext(AuthContext); // <--- Agregado setUser
 
   const handleLogin = async (email, password) => {
     if (!email || !password) {
@@ -18,10 +18,14 @@ export default function LoginScreen({ navigation }) {
     try {
       setLoading(true);
       const data = await login(email, password);
+
       setToken(data.token);
+      setUser(data.user); // <--- ESTO ES LO CRÍTICO: guardar el usuario completo
+
       const { user } = data;
       const { role } = user;
       let mensaje = "";
+
       switch (role) {
         case "admin":
           mensaje = `👨‍💼 Bienvenido, ${user.name}\nIngresaste como Administrador.\nGestiona el conjunto, los apartamentos y recibe notificaciones importantes.`;
@@ -40,13 +44,14 @@ export default function LoginScreen({ navigation }) {
       }
 
       Alert.alert("¡Acceso exitoso!", mensaje);
+
       setTimeout(() => {
         switch (role) {
           case "admin":
             navigation.replace("AdminDrawer");
             break;
           case "owner":
-            navigation.replace("OwnerDashboard");
+            navigation.replace("OwnerDrawer"); // <--- Asegúrate que sea "OwnerDrawer" y no "OwnerDashboard"
             break;
           case "tenant":
             navigation.replace("TenantDashboard");
@@ -77,9 +82,17 @@ export default function LoginScreen({ navigation }) {
       </View>
       <Text style={styles.title}>Ingreso</Text>
       <Text style={styles.subtitle}>Conjunto Residencial</Text>
-      <LoginForm onLogin={handleLogin} loading={loading} onRegister={handleRegister} />
+      <LoginForm
+        onLogin={handleLogin}
+        loading={loading}
+        onRegister={handleRegister}
+      />
       {loading && (
-        <ActivityIndicator size="large" color="#004272" style={{ marginTop: 20 }} />
+        <ActivityIndicator
+          size="large"
+          color="#004272"
+          style={{ marginTop: 20 }}
+        />
       )}
     </View>
   );

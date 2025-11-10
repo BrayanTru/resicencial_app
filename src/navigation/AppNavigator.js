@@ -1,7 +1,11 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItem,
+} from "@react-navigation/drawer";
 import LoginScreen from "../screens/Login/LoginScreen";
 import AdminDashboard from "../screens/AdminDashboard";
 import OwnerDashboard from "../screens/OwnerDashboard";
@@ -11,6 +15,7 @@ import ApartmentListScreen from "../screens/Apartment/ApartmentListScreen";
 import PaymentListScreen from "../screens/Payments/PaymentListScreen";
 import ResidentListScreen from "../screens/Residents/ResidentListScreen";
 import EventListScreen from "../screens/Events/EventListScreen";
+import ReportListScreen from "../screens/Reports/ReportListScreen";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -32,8 +37,7 @@ function AdminDrawer() {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
-      screenOptions={{ headerShown: true }}
-    >
+      screenOptions={{ headerShown: true }}>
       <Drawer.Screen
         name="AdminHome"
         component={AdminDashboard}
@@ -44,21 +48,21 @@ function AdminDrawer() {
         component={ApartmentListScreen}
         options={{ title: "Apartamentos" }}
       />
-       <Drawer.Screen
+      <Drawer.Screen
         name="PaymentList"
         component={PaymentListScreen}
         options={{ title: "Pagos" }}
       />
       <Drawer.Screen
-      name="ResidentListScreen"
-      component={ResidentListScreen}
-      options={{ title: "Residentes" }}
+        name="ResidentListScreen"
+        component={ResidentListScreen}
+        options={{ title: "Residentes" }}
       />
       <Drawer.Screen
-      name="EventListScreen"
-      component={EventListScreen}
-      options={{ title: "Eventos" }}
-      /> 
+        name="EventListScreen"
+        component={EventListScreen}
+        options={{ title: "Eventos" }}
+      />
       {/* Puedes añadir más pantallas aquí */}
     </Drawer.Navigator>
   );
@@ -68,13 +72,22 @@ function OwnerDrawer() {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
-      screenOptions={{ headerShown: true }}
-    >
+      screenOptions={{ headerShown: true }}>
       <Drawer.Screen
         name="OwnerDashboard"
         component={OwnerDashboard}
         options={{ title: "Panel Propietario" }}
       />
+      <Drawer.Screen
+        name="ReportListScreen"
+        component={ReportListScreen}
+        options={{ title: "Reportes de Daño" }}
+      />
+      {/* <Drawer.Screen
+        name="OwnerNotificationScreen"
+        component={OwnerNotificationScreen}
+        options={{ title: "Notificaciones" }}
+      /> */}
     </Drawer.Navigator>
   );
 }
@@ -82,8 +95,7 @@ function TenantDrawer() {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
-      screenOptions={{ headerShown: true }}
-    >
+      screenOptions={{ headerShown: true }}>
       <Drawer.Screen
         name="TenantDashboard"
         component={TenantDashboard}
@@ -96,8 +108,7 @@ function AirbnbDrawer() {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
-      screenOptions={{ headerShown: true }}
-    >
+      screenOptions={{ headerShown: true }}>
       <Drawer.Screen
         name="AirbnbGuestDashboard"
         component={AirbnbGuestDashboard}
@@ -110,10 +121,12 @@ function AirbnbDrawer() {
 export default function AppNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        initialRouteName="Login"
+        screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="AdminDrawer" component={AdminDrawer} />
-        <Stack.Screen name="OwnerDashboard" component={OwnerDrawer} />
+        <Stack.Screen name="OwnerDrawer" component={OwnerDrawer} />
         <Stack.Screen name="TenantDashboard" component={TenantDrawer} />
         <Stack.Screen name="AirbnbGuestDashboard" component={AirbnbDrawer} />
       </Stack.Navigator>
